@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string defday = DateTime.Now.ToString("yyy-MM-dd");
+    string page = ViewBag.btn;
+    if (ViewBag.btn == null)
+    {
+        page = "1";
+    }
+    string[] classlx = { "", "", "", "", "", "", "", "", "" };
+}
+@using PhotoStudio.Common;
+@using PhotoStudio.Model;
+<div class="padding-md">
+    <div class="col-sm-12">
+        <div class="page-title active">
+            历史订单
+        </div>
+    </div>
+</div>
+<div class="col-md-12 text-right text-left-md p-top-md">
+    <div class="search-input-wrapper">
+        <div class="search-input">
+            @using (Html.BeginForm("Records", "Order", FormMethod.Post))
+            {
+
+                @Html.TextBox("dddate", defday, new { @class = "form-control input-md inline-block", @placeholder = "请输入下单日期" })
+                <button type="submit" class="btn btn-default "><i class="ion-ios7-search-strong"></i></button>
+            }
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-dark text-white">
+                <div class="m-top-md m-bottom-md text-center col-sm-8 col-sm-offset-2 ">
+                    <div class="col-sm-1">订单ID</div>
+                    <div class="col-sm-1">客户姓名</div>
+                    <div class="col-sm-2">所选套系</div>
+                    <div class="col-sm-2">联系电话</div>
+                    <div class="col-sm-2">下单时间</div>
+                    <div class="col-sm-2">接单ID</div>
+                    <div class="col-sm-1">状态</div>
+                    <div class="col-sm-1">价格</div>
+                </div>
+            </div>
+                <div class="m-top-md m-bottom-md text-center">
+                @if (ViewBag.lCount > 0)
+                {
+
+                    foreach (PhotoStudio.Model.Order n in ViewBag.listOrders)
+                    {<div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 ">
+                        <div class="col-sm-1">@n.ID</div>
+                        <div class="col-sm-1">@n.Name</div>
+                        <div class="col-sm-2">@n.Type</div>
+                        <div class="col-sm-2">@n.Phone</div>
+                        <div class="col-sm-2">@n.Time</div>
+                        <div class="col-sm-2">@n.PutID</div>
+                        <div class="col-sm-1">@n.State</div>
+                        <div class="col-sm-1">@n.Money</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 ">
+                        <hr style="height:1px;border:none;border-top:1px dashed #7B7B7B;" />
+                    </div>
+                </div>
+                    }
+                    <nav>
+                        <ul class="pagination pagination-lg">
+                            @MvcHtmlString.Create(PageBar.GetPagebar((int)ViewBag.Index, (int)ViewBag.lCount));
+                        </ul>
+                    </nav>
+                }
+                else
+                {
+                    <div class="h4 text-upper col-sm-8 col-sm-offset-2 ">
+                        没有相关记录！！
+                    </div>
+                }
+
+            </div>
+            <div class="panel-footer bg-white text-center padding-md">
+                <div class="h4 text-upper">by.@ViewBag.UID </div>
+                <div class="text-muted font-7 m-top-xs">
+                    @DateTime.Now
+                </div>
+            </div>
+        </div><!-- ./panel -->
+    </div><!-- ./col -->
+</div>

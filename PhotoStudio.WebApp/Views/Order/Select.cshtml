@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Select";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string[] classlx = { "bg-success", "bg-warning", "bg-danger", "bg-info" };
+}
+
+<div class="padding-md">
+    <div class="col-sm-12">
+        <div class="page-title active">
+            客户选片
+        </div>
+    </div>
+</div>
+<div class="col-md-12 text-right text-left-md p-top-md">
+    <div class="search-input-wrapper">
+        <div class="search-input">
+            @using (Html.BeginForm("Select", "Order", FormMethod.Post))
+            {
+                @Html.TextBox("ddnum", "", new { @class = "form-control input-md inline-block", @placeholder = "请输入订单号码" })
+                <button type="submit" class="btn btn-default "><i class="ion-ios7-search-strong"></i></button>
+            }
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-success text-white">
+                <div class="h4 text-white text-center">相片列表</div>
+            </div>
+            @if (ViewBag.ddnum != null)
+            {
+                if (ViewBag.Exists)
+                {
+                    <div class="h4 text-muted text-center">
+                        订单号码：<span class="h4 text-success text-center"> @ViewBag.ddnum </span>
+                    </div>
+                }
+                else
+                {
+                    <div class="h4 text-muted text-center">订单号码：@ViewBag.Error</div>
+                }
+
+            }
+            else
+            {
+                <div class="h4 text-muted text-center">订单号码：</div>
+            }
+            <div class="row">
+                @if(ViewBag.Photolist!=null){
+                
+                for (int i = 0; i < ViewBag.Photolist.Count; i++)
+                {
+                    <div class="col-md-4">
+                        <div class="panel-body @classlx[i%4] text-white">
+                            <div class="panel panel-default weather-widget">
+                                <img src="@ViewBag.Photolist[i].URL" height="300" />
+                            </div>
+
+                        </div><!-- ./panel -->
+                        <div class="bg-white text-center padding-md">
+                            @using (Html.BeginForm("Select", "Order", FormMethod.Post))
+                            {
+                                object sbb = ViewBag.Photolist[i].OrderID;
+                                object sb2 = ViewBag.Photolist[i].ID;
+                                @Html.TextBox("ddid", sbb, new { @type = "hidden" })
+                                @Html.TextBox("xpid", sb2, new { @type = "hidden" })
+                                <button type="submit" class="btn btn-default text-center">查看原图</button>
+                            }
+                            @using (Html.BeginForm("Select", "Order", FormMethod.Post))
+                            {
+                                object sbb = ViewBag.Photolist[i].OrderID;
+                                object sb2 = ViewBag.Photolist[i].ID;
+                                object sb3 = ViewBag.Photolist[i].State;
+                                @Html.TextBox("ddid", sbb, new { @type = "hidden" })
+                                @Html.TextBox("xpid", sb2, new { @type = "hidden" })
+                                @Html.TextBox("state", sb3, new { @type = "hidden" })
+                                <button type="submit" class="btn btn-default text-center">@ViewBag.Photolist[i].State</button>
+                            }
+                        </div>
+
+                    </div><!-- ./col -->
+                }
+                }
+
+            </div>
+
+            <div class="panel-footer bg-white text-center padding-md">
+                <div class="h4 text-upper">by.@ViewBag.UID </div>
+                <div class="text-muted font-7 m-top-xs">
+                    @DateTime.Now
+                </div>
+            </div>
+        </div><!-- ./panel -->
+    </div><!-- ./col -->
+</div>

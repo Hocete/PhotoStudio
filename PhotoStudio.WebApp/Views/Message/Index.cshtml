@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UID"] != null)
+{
+    <script type="text/javascript">
+        function PutsM(data) {
+
+            var serverData = data.split(':');
+            if (serverData[0] == "ok") {
+                $("#sussMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>" + serverData[1] + "！</strong></div>");
+            }
+            else if (serverData[0] == "no") {
+                $("#sussMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>" + serverData[1] + "!</strong></div>");
+            }
+            else {
+                window.location.href = "/Home/Index";
+                $("#sussMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+            }
+        }
+    </script>
+<div class="panel panel-default weather-widget">
+    <div class="panel-body bg-danger text-white">
+        <div class="m-top-md m-bottom-md text-center col-sm-8 col-sm-offset-2 ">
+            <div class="h4 text-white text-center">信息提醒</div>
+        </div>
+    </div>
+    <div class="row m-top-md m-bottom-md text-center">
+        @using (Ajax.BeginForm("PutMessage", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "PutsM" }, new { id = "PutsM", @class = "form-horizontal " }))
+        {
+            <div id="sussMsg"></div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">标题</label>
+                @Html.TextBox("Title", "", new { @class = "col-md-6 form-control", @placeholder = "标题" })
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">收件人ID</label>
+                @Html.DropDownList("GetOne", (List<SelectListItem>)ViewBag.Letters, new { @class = "col-md-6 form-control" }); 
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">提醒内容</label>
+                @Html.TextArea("Text", "", new { @class = "col-md-6 form-control", @placeholder = "提醒内容" })
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">提醒</button>
+                <button type="reset" class="btn btn-default">重置</button>
+            </div>
+        }
+    </div>
+    <div class="panel-footer bg-white text-center padding-md">
+        <div class="h4 text-upper">by.@Session["UID"] </div>
+        <div class="text-muted font-7 m-top-xs">
+            @DateTime.Now
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <div class="padding-md">
+        <h1><a href="/Login">请登录！</a></h1>
+    </div>
+}

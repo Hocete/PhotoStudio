@@ -1,0 +1,101 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>忘记密码</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+
+    <!-- ionicons -->
+    <link href="~/Content/ionicons.min.css" rel="stylesheet">
+    <!-- Simplify -->
+    <link href="~/Content/simplify.min.css" rel="stylesheet">
+    <!-- Jquery -->
+    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
+    <!-- Popup Overlay -->
+    <script src="~/Scripts/jquery.popupoverlay.min.js"></script>
+    <!-- Modernizr -->
+    <script src="~/Scripts/modernizr.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- Simplify -->
+    <script src="~/Scripts/simplify.js"></script>
+    <script type="text/javascript">
+        function tips(data) {
+            var serverData = data.split(':');
+            if (serverData[0] == "ok") {
+                $("#errorMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>成功取回！</strong>" + serverData[1] + "的密码为" + serverData[2] + "</div>");
+            }
+            else if (serverData[0] == "no") {
+                $("#errorMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>" + serverData[1] + "</strong> 请输入正确的个人信息！</div>");
+            }
+            else {
+                $("#errorMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+            }
+        }
+        function back() {
+            window.location.href = "/Login";
+        }
+    </script>
+</head>
+<body class="overflow-hidden light-background">
+    <div class="wrapper no-navigation preload">
+        <div class="sign-in-wrapper">
+            <div class="sign-in-inner">
+                <div class="login-brand text-center"><h1>忘记密码？</h1>
+                    <i class="fa fa-user  m-right-xs"></i>
+
+                </div>
+                @using (Ajax.BeginForm("ForgetLogin", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "tips" }, new { id = "loginForm", @class = "form-horizontal " }))
+                {
+                    <div class="form-group m-bottom-md">
+                        <label>员工ID</label>
+                        @Html.TextBox("UID", "", new { @class = "form-control", @placeholder = "Staff ID"})
+                    </div>
+                    <div class="form-group">
+                        <label>员工姓名</label>
+                        @Html.TextBox("name", "", new { @class = "form-control", @placeholder = "name" })
+                    </div>
+                    <div class="form-group">
+                        <label>电话</label>
+                        @Html.TextBox("Tel", "", new { @class = "form-control", @placeholder = "Tel" })
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        @Html.TextBox("Email", "", new { @class = "form-control", @placeholder = "Email", @type = "Email" })
+                    </div>
+                    <div class="form-group">
+                        <label>身份证号码</label>
+                        @Html.TextBox("IDcard", "", new { @class = "form-control", @placeholder = "IDcard" })
+                    </div>
+                    <div id="errorMsg"></div>
+                    <div class="m-top-md p-top-sm">
+                        <button type="submit" class="btn btn-success btn-block btn-lg">立即取回</button>
+                    </div>
+                    <div class="m-top-md p-top-sm">
+                            <button onclick="back()" class="btn btn-info btn-block btn-lg">返回登录</button>
+                        <div class="font-12 text-center m-bottom-xs">
+                            © 2016 .Daisy. ALL Rights Reserved
+                        </div>
+                    </div>
+                }
+            </div><!-- ./sign-in-inner -->
+        </div><!-- ./sign-in-wrapper -->
+    </div><!-- /wrapper -->
+
+    <a href="" id="scroll-to-top" class="hidden-print"><i class="icon-chevron-up"></i></a>
+
+</body>
+
+</html>

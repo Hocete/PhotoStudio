@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="padding-md">
+<div class="col-sm-12">
+    <div class="page-title active">
+        收入支出统计
+    </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-danger text-white">
+                <div class="h4 text-white text-center">财务</div>
+            </div>
+            <div class="col-md-12 m-top-md m-bottom-md text-center">
+                    @using (Html.BeginForm("Index", "Count", FormMethod.Get))
+                    { 
+                        <div class="col-md-offset-5 col-md-2">开始时间：</div>
+                        <div class="col-md-5">
+                        @Html.TextBox("ksdate", "2015/02/29", new { @class = "col-md-6", @type = "date", @name = "user_date", @id = "ks_date" })
+                        </div>
+                            <div class="col-md-offset-5 col-md-2">结束时间：</div>
+                            <div class="col-md-5">
+                                @Html.TextBox("jsdate", "2015/02/29", new { @class = "col-md-6", @type = "date", @name = "user_date", @id = "js_date" })
+                            </div>
+                        <div class="col-md-offset-8 col-md-2 text-left">
+                            <button id="btn1" type="submit" class="btn btn-default ">查询</button>
+                        </div> 
+                    }
+                   
+            </div>
+            <div class="col-md-12 m-top-md m-bottom-md text-center">
+                @ViewBag.ksdate 到 @ViewBag.jsdate
+            </div>
+            <div class="col-md-12 m-top-md m-bottom-md text-center text-dark">
+                收入：@ViewBag.countr 元<br />
+                支出：@ViewBag.countc 元
+            </div>
+                <div class="panel-footer bg-white text-center padding-md">
+                    <div class="h4 text-upper">by.@ViewBag.UID </div>
+                    <div class="text-muted font-7 m-top-xs">
+                        @DateTime.Now
+                    </div>
+                </div>
+
+            </div><!-- ./panel -->
+    </div><!-- ./col -->
+</div>
+
+

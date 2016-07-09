@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string dlf = "hidden"; 
+}
+
+<div class="padding-md">
+    <div class="col-sm-12">
+        <div class="page-title active">
+            客户预约
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-success text-white">
+                <div class="h4 text-white text-center">顾客订单</div>
+            </div>
+            <div class="m-top-md m-bottom-md text-center">
+                <label class="text-danger">
+                @ViewBag.Success
+                </label>
+                @using (Html.BeginForm("Index", "Order", FormMethod.Post, new { @class = "form-horizontal " }))
+                {
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">顾客姓名</label>
+                        @Html.TextBox("name", "", new { @class = "col-md-6 form-control", @placeholder = "name" })
+                        @if (ViewBag.name != "")
+                        {
+                            <label class="col-md-2 text-left text-danger"> @ViewBag.name </label>
+                        }
+                        
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">所选套系 </label>
+                        @{object sxtx = @ViewBag.xzvalue;}
+                        @Html.TextBox("select", sxtx, new { @class = "col-md-6 form-control", @placeholder = "select",@readOnly = "true" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">电话号码</label>
+                        @Html.TextBox("phone", "", new { @class = "col-md-6 form-control", @placeholder = "phone", @type = "tel" })
+                        @if (ViewBag.phone != "")
+                        {
+                            <label class="col-md-2 text-left text-danger"> @ViewBag.phone </label>
+                        }
+                       
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">邮箱</label>
+                        @Html.TextBox("email", "", new { @class = "col-md-6 form-control", @placeholder = "Email", @type = "email" })
+                        @if (ViewBag.Email != "")
+                        {
+                            <label class="col-md-2 text-left text-danger"> @ViewBag.Email </label>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">地址</label>
+                        @Html.TextBox("place", "", new { @class = "col-md-6 form-control", @placeholder = "place", @type = "text" })
+                    </div>
+                    <div class="form-group">
+                        @if(Session["UID"] != null)
+                        {
+                            dlf ="text";
+                        }
+                        <label class="col-md-2 col-md-offset-3 text-right">价格</label>
+                        @{object prices = @ViewBag.ppvalue;}
+                        @if (Session["UID"] == null)
+                        {
+                            <div class="col-md-2 text-left text-info">@ViewBag.ppvalue</div>
+                        }
+                        @Html.TextBox("price", prices, new { @class = "col-md-6 form-control", @placeholder = "price", @type = dlf })
+                        @if (ViewBag.Price != "")
+                        {
+                            <label class="col-md-2 text-left text-danger"> @ViewBag.Price </label>
+                        }
+                        
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">提交订单</button>
+                        <button type="reset" class="btn btn-default">重置订单</button>
+                    </div>
+                }
+            </div>
+            <div class="panel-footer bg-white text-center padding-md">
+                <div class="h4 text-upper">by.@ViewBag.UID </div>
+                <div class="text-muted font-7 m-top-xs">
+                    @DateTime.Now
+                </div>
+            </div>
+        </div><!-- ./panel -->
+    </div><!-- ./col -->
+</div>
+

@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="padding-md">
+    <div class="col-sm-12">
+        <div class="page-title active">
+            当日预约订单
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-dark text-white text-center">
+                <div class="h4">订单列表</div>
+            </div>
+            <div class="panel-body">
+                <div class="m-top-md m-bottom-md text-center">
+                    @if (ViewBag.lCount > 0)
+                    {
+                        <div class="col-sm-8 col-sm-offset-2 ">
+                            <div class="col-sm-1">订单ID</div>
+                            <div class="col-sm-1">客户姓名</div>
+                            <div class="col-sm-2">所选套系</div>
+                            <div class="col-sm-2">联系电话</div>
+                            <div class="col-sm-2">下单时间</div>
+                            <div class="col-sm-2">接单ID</div>
+                            <div class="col-sm-1">状态</div>
+                            <div class="col-sm-1">价格</div>
+                        </div>
+                        <div class="col-sm-8 col-sm-offset-2 ">
+                            <hr style="height:1px;border:none;border-top:1px dashed #7B7B7B;" />
+                        </div>
+                        foreach (PhotoStudio.Model.Order n in ViewBag.listOrders)
+                        {
+                            <div class="col-sm-8 col-sm-offset-2 ">
+                                <div class="col-sm-1">@n.ID</div>
+                                <div class="col-sm-1">@n.Name</div>
+                                <div class="col-sm-2">@n.Type</div>
+                                <div class="col-sm-2">@n.Phone</div>
+                                <div class="col-sm-2">@n.Time</div>
+                                <div class="col-sm-2">@n.PutID</div>
+                                <div class="col-sm-1">@n.State</div>
+                                <div class="col-sm-1">@n.Money</div>
+                            </div>
+                            <div class="col-sm-8 col-sm-offset-2 ">
+                                <hr style="height:1px;border:none;border-top:1px dashed #7B7B7B;" />
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        <div class="h4 text-upper col-sm-8 col-sm-offset-2 ">
+                            没有相关记录！！
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="panel-footer bg-white text-center padding-md">
+                <div class="h4 text-upper">by.@ViewBag.UID </div>
+                <div class="text-muted font-7 m-top-xs">
+                    @DateTime.Now
+                </div>
+            </div>
+        </div>
+    </div><!-- ./panel -->
+</div><!-- ./col -->
+</div>

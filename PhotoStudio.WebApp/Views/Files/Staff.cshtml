@@ -1,0 +1,265 @@
+﻿
+@{
+    ViewBag.Title = "Staff";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using PhotoStudio.Common;
+@using PhotoStudio.Model;
+<script type="text/javascript">
+    function StaffAdd(data) {
+
+        var serverData = data.split(':');
+        if (serverData[0] == "ok") {
+            $("#sussMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>" + serverData[1] + "！</strong></div>");
+        }
+        else if (serverData[0] == "no") {
+            $("#sussMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>" + serverData[1] + "!</strong></div>");
+        }
+        else {
+            window.location.href = "/Home/Index";
+            $("#sussMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+        }
+    }
+    function StaffDel(data) {
+
+        var serverData = data.split(':');
+        if (serverData[0] == "ok") {
+            $("#sussMsg2").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>" + serverData[1] + "！</strong></div>");
+        }
+        else if (serverData[0] == "no") {
+            $("#sussMsg2").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>" + serverData[1] + "!</strong></div>");
+        }
+        else {
+            window.location.href = "/Home/Index";
+            $("#sussMsg2").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+        }
+    }
+    function StaffEdit(data) {
+
+        var serverData = data.split(':');
+        if (serverData[0] == "ok") {
+            $("#sussMsg2").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>" + serverData[1] + "！</strong></div>");
+        }
+        else if (serverData[0] == "no") {
+            $("#sussMsg2").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>" + serverData[1] + "!</strong></div>");
+        }
+        else {
+            window.location.href = "/Home/Index";
+            $("#sussMsg2").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+        }
+    }
+</script>
+<div class="padding-md">
+    <h2 class="header-text">
+        员工档案
+        <span class="sub-header">
+            摄影工作室
+        </span>
+    </h2>
+    <div class="smart-widget widget-purple">
+        <div class="smart-widget-header">
+            员工列表
+            <span class="smart-widget-option">
+                <span class="refresh-icon-animated">
+                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                </span>
+                <a href="#" class="widget-toggle-hidden-option">
+                    <i class="fa fa-cog"></i>
+                </a>
+                <a href="#" class="widget-collapse-option" data-toggle="collapse">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </span>
+        </div>
+        <div class="smart-widget-inner">
+            <div class="smart-widget-hidden-section">
+                <ul class="widget-color-list clearfix">
+                    <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                    <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                    <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                    <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                    <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                    <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                    <li style="background-color:#e36159;" data-color="widget-red"></li>
+                    <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                    <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                    <li style="background-color:#fff;" data-color="reset"></li>
+                </ul>
+            </div>
+            <div class="smart-widget-body">
+                <div id="sussMsg2"> </div>
+                <table class="table table-striped table-bordered" id="dataTable">
+                    <thead>
+                        <tr class="bg-dark-blue">
+                            <th>员工工号</th>
+                            <th>员工姓名</th>
+                            <th>所属部门</th>
+                            <th>性别</th>
+                            <th>学历</th>
+                            <th>电话</th>
+                            <th>邮箱</th>
+                            <th>生日</th>
+                            <th>身份证号码</th>
+                            <th>加入时间</th>
+                            <th>住址</th>
+                            <th>底薪</th>
+                            <th>权限</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.lCount > 0)
+                        {
+                            foreach (PhotoStudio.Model.Staff n in ViewBag.listStaff)
+                            {
+                                string root = "";
+                                string sex = "";
+                                try
+                                {
+                                    int seid = Convert.ToInt32(n.Power);
+                                    PhotoStudio.Model.Power m = new PhotoStudio.BLL.Power().GetModel(seid);
+                                    root = m.Name;
+                                }
+                                catch
+                                {
+                                    if (n.Power != "0")
+                                    {
+                                        root = "最高权限";
+                                    }
+                                }
+                                if (n.Sex == 0)
+                                {
+                                    sex = "男";
+                                }
+                                else
+                                {
+                                    sex = "女";
+                                }
+                                <tr>
+                                    <td>@n.ID</td>
+                                    <td>@n.Name</td>
+                                    <td>@n.SeID</td>
+                                    <td>@sex</td>
+                                    <td>@n.Edu</td>
+                                    <td>@n.Tel</td>
+                                    <td>@n.Email</td>
+                                    <td>@n.Birth</td>
+                                    <td>@n.IDCard</td>
+                                    <td>@n.JoinTime</td>
+                                    <td>@n.Place</td>
+                                    <td>@n.Wages</td>
+                                    <td>@root</td>
+                                    <td><button type="submit" class="btn btn-success">修改</button></td>
+                                    <td>
+                                        @using (Ajax.BeginForm("StaffDel", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "StaffDel" }, new { id = "StaffDel", @class = "form-horizontal " }))
+                                        {
+                                            @Html.TextBox("delid", n.ID, new { @type = "hidden" })
+                                            <button type="submit" class="btn btn-success">删除</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                        else
+                        {
+
+                        }
+                    </tbody>
+                </table>
+                <nav class="text-center">
+                    <ul class="pagination pagination-lg">
+                        @MvcHtmlString.Create(PageBar.GetPagebar((int)ViewBag.Index, (int)ViewBag.lCount));
+                    </ul>
+                </nav>
+            </div>
+        </div><!-- ./smart-widget-inner -->
+    </div><!-- ./smart-widget -->
+    <div class="smart-widget m-top-lg widget-dark-blue">
+        <div class="smart-widget-header">
+            员工添加
+            <span class="smart-widget-option">
+                <span class="refresh-icon-animated">
+                    <i class="fa fa-circle-o-notch fa-spin"></i>
+                </span>
+                <a href="#" class="widget-toggle-hidden-option">
+                    <i class="fa fa-cog"></i>
+                </a>
+                <a href="#" class="widget-collapse-option" data-toggle="collapse">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </span>
+        </div>
+        <div class="smart-widget-inner">
+            <div class="smart-widget-hidden-section">
+                <ul class="widget-color-list clearfix">
+                    <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                    <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                    <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                    <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                    <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                    <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                    <li style="background-color:#e36159;" data-color="widget-red"></li>
+                    <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                    <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                    <li style="background-color:#fff;" data-color="reset"></li>
+                </ul>
+            </div>
+            <div class="smart-widget-body">
+                @using (Ajax.BeginForm("StaffAdd", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "StaffAdd" }, new { id = "StaffAdd", @class = "form-horizontal " }))
+                {
+                    <div id="sussMsg"> </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">员工姓名</label>
+                        @Html.TextBox("name", "", new { @class = "col-md-6 form-control", @placeholder = "name" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">所属部门</label>
+                        @Html.DropDownList("Sec", (List<SelectListItem>)ViewBag.Letters, new { @class = "col-md-6 form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">员工性别</label>
+                        @Html.DropDownList("Sex", (List<SelectListItem>)ViewBag.lstsex, new { @class = "col-md-6 form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">受教育程度</label>
+                        @Html.TextBox("Edu", "", new { @class = "col-md-6 form-control", @placeholder = "Edu" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">生日</label>
+                        @Html.TextBox("Birth", "", new { @class = "col-md-6 form-control", @type = "date" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">家庭住址</label>
+                        @Html.TextBox("Place", "", new { @class = "col-md-6 form-control", @placeholder = "Place" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">电话</label>
+                        @Html.TextBox("Tel", "", new { @class = "col-md-6 form-control", @placeholder = "Tel", @type = "tel" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">邮箱</label>
+                        @Html.TextBox("Email", "", new { @class = "col-md-6 form-control", @placeholder = "Email", @type = "email" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">身份证号码</label>
+                        @Html.TextBox("IDcard", "", new { @class = "col-md-6 form-control", @placeholder = "IDcard", @type = "number" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">底薪</label>
+                        @Html.TextBox("Wages", "", new { @class = "col-md-6 form-control", @placeholder = "Wages", @type = "number" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-5">
+                            <button type="submit" class="btn btn-success">确定添加</button>
+                            <button type="reset" class="btn btn-default">重置</button>
+                        </div>
+                    </div>
+                }
+                <label class="col-md-4 col-md-offset-8 text-right">注：新添加的员工登录密码为123456</label>
+            </div>
+        </div><!-- ./smart-widget-inner -->
+    </div><!-- ./smart-widget -->
+
+</div>

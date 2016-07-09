@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Modify";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int meid = 0;
+    try
+    {
+        meid = Convert.ToInt32(Session["UID"]);
+    }
+    catch
+    {
+        meid = 0;
+    }
+    PhotoStudio.Model.Staff me = new PhotoStudio.BLL.Staff().GetModel(meid);
+    PhotoStudio.Model.Sector mese = new PhotoStudio.Model.Sector();
+    try
+    {
+        
+        mese = new PhotoStudio.BLL.Sector().GetModel(Convert.ToInt32(me.SeID));
+    }
+    catch
+    {
+        mese = new PhotoStudio.BLL.Sector().GetModel(1);
+    }
+
+}
+@if (Session["UID"] != null)
+{
+    <script type="text/javascript">
+        function Modis(data) {
+            
+            var serverData = data.split(':');
+            if (serverData[0] == "ok") {
+                $("#sussMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>修改成功！</strong></div>");
+            }
+            else if (serverData[0] == "no") {
+                $("#sussMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>修改失败!</strong></div>");
+            }
+            else {
+                $("#sussMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+            }
+        }
+    </script>
+<div class="padding-md">
+    <h2 class="header-text">
+        修改我的信息
+        <span class="sub-header">
+            Ddit&nbsp;me.@me.Name
+        </span>
+    </h2>
+    <h4>@me.Name<i class="fa fa-user text-success m-left-xs font-14"></i></h4>
+        
+        @using (Ajax.BeginForm("Edit", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "Modis" }, new { id = "Modifyme", @class = "form-horizontal " }))
+        {
+        <div id="sussMsg"></div>
+        <div class="m-top-sm">
+            <div class="form-group">
+
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-male user-profile-icon"></i>
+                    <i class="fa fa-female user-profile-icon"></i>
+                    姓名
+                </label>
+                @Html.TextBox("name", @me.Name, new { @class = "col-md-6 form-control", @placeholder = "name" })
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-male user-profile-icon"></i>
+                    <i class="fa fa-female user-profile-icon"></i>
+                    性别
+                </label>
+                @Html.DropDownList("sex", (List<SelectListItem>)ViewBag.lstsex, new { @class = "col-md-6 form-control"})
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-graduation-cap user-profile-icon"></i>
+                    学历
+                </label>
+                @Html.TextBox("edu", me.Edu, new { @class = "col-md-6 form-control", @placeholder = "name" })
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-birthday-cake user-profile-icon"></i>
+                    生日
+                </label>
+                @Html.TextBox("birth", me.Birth, new { @class = "col-md-6 form-control", @type= "date" })
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-phone user-profile-icon"></i>
+                    电话
+                </label>
+                @Html.TextBox("Tel", me.Tel, new { @class = "col-md-6 form-control", @placeholder = "Tel" })
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-envelope-o user-profile-icon"></i>
+                    邮箱
+                </label>
+                @Html.TextBox("Email", me.Email, new { @class = "col-md-6 form-control"})
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-home user-profile-icon"></i>
+                    住址
+                </label>
+                @Html.TextBox("Place", me.Place, new { @class = "col-md-6 form-control"})
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-credit-card user-profile-icon"></i>
+                    身份证
+                </label>
+                @Html.TextBox("IDcard", me.IDCard, new { @class = "col-md-6 form-control" })
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 col-md-offset-3 text-right">
+                    <i class="fa fa-calendar user-profile-icon"></i>
+                    密码
+                </label>
+                @Html.TextBox("pwd", me.PassWord, new { @class = "col-md-6 form-control", @type="password"})
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-5">
+                    <button type="submit" class="btn btn-success">修改</button>
+                    <button type="reset" class="btn btn-default">重置</button>
+                </div>
+            </div>
+        </div>
+         }
+
+</div>
+}
+else
+{
+    <div class="padding-md">
+        <h1><a href="/Login">请登录！</a></h1>
+    </div>
+}

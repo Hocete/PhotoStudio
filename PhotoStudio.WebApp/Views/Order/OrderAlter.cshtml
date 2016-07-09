@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewBag.Title = "OrderAlter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string btndsy = null;
+    if (ViewBag.btn != null)
+    {
+        btndsy = ViewBag.btn;
+    }
+    else
+    {
+        btndsy = ViewBag.State;
+    }
+
+}
+<div class="padding-md">
+    <div class="col-sm-12">
+        <div class="page-title active">
+            订单跟进
+        </div>
+    </div>
+</div>
+<div class="col-md-12 text-right text-left-md p-top-md">
+    <div class="search-input-wrapper">
+        <div class="search-input">
+            @using (Html.BeginForm("OrderAlter", "Order", FormMethod.Post))
+            {
+                @Html.TextBox("ddnum", "", new { @class = "form-control input-md inline-block", @placeholder = "请输入订单号码" })
+                <button type="submit" class="btn btn-default "><i class="ion-ios7-search-strong"></i></button>
+            }
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-danger text-white">
+                <div class="h4 text-white text-center">订单状态</div>
+            </div>
+            @if (ViewBag.ddnum != null)
+            {
+                if (ViewBag.Exists)
+                {
+                    <div class="h4 text-muted text-center">
+                        订单号码：<span class="h4 text-success text-center"> @ViewBag.ddnum </span>（
+                        @if(ViewBag.btn!=null)
+                        {
+                        @ViewBag.btn
+                        }
+                        else
+                        {
+                        @ViewBag.State
+                        }
+                        ）
+                    </div>
+                }
+                else
+                {
+                 <div class="h4 text-muted text-center">订单号码：@ViewBag.Error</div>
+                }
+
+            }
+            else
+            {
+                <div class="h4 text-muted text-center">订单号码：</div>
+            }
+            
+
+            <div class="col-md-12 m-top-md m-bottom-md text-center">
+                <div class="col-md-offset-1 col-md-10 progress">
+                    @switch (btndsy)
+                    {
+                        case "已预约":
+                            <div class="progress-bar progress-bar-warning" style="width:20%;">
+                            </div>
+                            break;
+                        case "已拍照":
+                            <div class="progress-bar progress-bar-warning" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:20%;">
+                            </div>
+                            break;
+                        case "已选片":
+                            <div class="progress-bar progress-bar-warning" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width:20%;">
+                            </div>
+                            break;
+                        case "后期完成":
+                            <div class="progress-bar progress-bar-warning" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-info progress-bar-striped active" style="width:20%;">
+                            </div>
+                            break;
+                        default:
+                            <div class="progress-bar progress-bar-warning" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-info progress-bar-striped active" style="width:20%;">
+                            </div>
+                            <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width:20%;">
+                            </div>
+                            break;
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-12 m-top-md m-bottom-md text-center">
+                <div class="col-md-offset-1 col-md-1">
+                    @using (Html.BeginForm("OrderAlter", "Order", FormMethod.Post))
+                    {
+                        object sbb = ViewBag.ddnum;
+                            @Html.TextBox("ddnum", sbb, new { @type = "hidden" })
+                        @Html.TextBox("btn", "已预约", new { @type = "hidden" })
+                        <button id="btn1" type="submit" class="btn btn-default ">预约</button>
+                    }
+                </div>
+                <div class="col-md-offset-1 col-md-1">
+                    @using (Html.BeginForm("OrderAlter", "Order", FormMethod.Post))
+                    {
+                        object sbb = ViewBag.ddnum;
+                    @Html.TextBox("ddnum", sbb, new { @type = "hidden" })
+                        @Html.TextBox("btn", "已拍照", new { @type = "hidden" })
+                        <button id="btn2" type="submit" class="btn btn-default ">拍照</button>
+                    }
+                </div>
+                <div class="col-md-offset-1 col-md-1">
+                    @using (Html.BeginForm("OrderAlter", "Order", FormMethod.Post))
+                    {
+                        object sbb = ViewBag.ddnum;
+                    @Html.TextBox("ddnum", sbb, new { @type = "hidden" })
+                        @Html.TextBox("btn", "已选片", new { @type = "hidden" })
+                        <button id="btn3" type="submit" class="btn btn-default ">选片</button>
+                    }
+                </div>
+                <div class="col-md-offset-1 col-md-1">
+                    @using (Html.BeginForm("OrderAlter", "Order", FormMethod.Post))
+                    {
+                        object sbb = ViewBag.ddnum;
+                    @Html.TextBox("ddnum", sbb, new { @type = "hidden" })
+                        @Html.TextBox("btn", "后期完成", new { @type = "hidden" })
+                        <button id="btn4" type="submit" class="btn btn-default ">后期</button>
+                    }
+                </div>
+                <div class="col-md-offset-1 col-md-1">
+                    @using (Html.BeginForm("OrderAlter", "Order", FormMethod.Post))
+                    {
+                        object sbb = ViewBag.ddnum;
+                    @Html.TextBox("ddnum", sbb, new { @type = "hidden" })
+                        @Html.TextBox("btn", "已取货付款", new { @type = "hidden" })
+                        <button id="btn5" type="submit" class="btn btn-default ">取货付款</button>
+                    }
+                </div>
+            </div>
+            <div class="panel-footer bg-white text-center padding-md">
+                <div class="h4 text-upper">by.@ViewBag.UID </div>
+                <div class="text-muted font-7 m-top-xs">
+                    @DateTime.Now
+                </div>
+            </div>
+
+        </div><!-- ./panel -->
+    </div><!-- ./col -->
+</div>

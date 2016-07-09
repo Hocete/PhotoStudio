@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="padding-md">
+    <div class="col-sm-12">
+        <div class="page-title active">
+            相片上传
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-dark text-white">
+                <div class="h4 text-white text-center">选择相片</div>
+            </div>
+            <div class="m-top-md m-bottom-md text-center">
+                <label class="text-danger">
+                    @ViewBag.Message
+                </label>
+                @using (Html.BeginForm("Upload", "Order", FormMethod.Post, new { @class = "form-horizontal ", @enctype = "multipart/form-data" }))
+                {
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">订单号</label>
+                        @Html.TextBox("ddid", "", new { @class = "col-md-6 form-control", @placeholder = "订单ID" })
+                        @if (ViewBag.name != "")
+                        {
+                            <label class="col-md-2 text-left text-danger"> @ViewBag.name </label>
+                        }
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">文件</label>
+                        @Html.TextBox("photo", "", new { @class = "col-md-6",@type="file", @placeholder = "place"})
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">确定</button>
+                        <button type="reset" class="btn btn-default">重置</button>
+                    </div>
+                            }
+                <img src="@ViewBag.PP" width="300" height="300" />
+                
+            </div>
+            <div class="panel-footer bg-white text-center padding-md">
+                <div class="h4 text-upper">by.@ViewBag.UID </div>
+                <div class="text-muted font-7 m-top-xs">
+                    @DateTime.Now
+                </div>
+            </div>
+        </div><!-- ./panel -->
+    </div><!-- ./col -->
+</div>
+

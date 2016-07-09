@@ -1,0 +1,654 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - </title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+
+    <!-- ionicons -->
+    <link href="~/Content/ionicons.min.css" rel="stylesheet">
+
+    <!-- Morris -->
+    <link href="~/Content/morris.css" rel="stylesheet" />
+
+    <!-- Datepicker -->
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+
+    <!-- Animate -->
+    <link href="~/Content/animate.min.css" rel="stylesheet">
+
+    <!-- Owl Carousel -->
+    <link href="~/Content/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/Content/owl.theme.default.min.css" rel="stylesheet">
+
+    <!-- Simplify -->
+    <link href="~/Content/simplify.min.css" rel="stylesheet">
+    <!-- Jquery -->
+    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <!-- Flot -->
+    <script src='~/Scripts/jquery.flot.min.js'></script>
+
+    <!-- Slimscroll -->
+    <script src='~/Scripts/jquery.slimscroll.min.js'></script>
+
+    <!-- Morris -->
+    <script src='~/Scripts/rapheal.min.js'></script>
+    <script src='~/Scripts/morris.min.js'></script>
+
+    <!-- Datepicker -->
+    <script src='~/Scripts/uncompressed/datepicker.js'></script>
+
+    <!-- Sparkline -->
+    <script src='~/Scripts/sparkline.min.js'></script>
+
+    <!-- Skycons -->
+    <script src='~/Scripts/uncompressed/skycons.js'></script>
+
+    <!-- Popup Overlay -->
+    <script src='~/Scripts/jquery.popupoverlay.min.js'></script>
+
+    <!-- Easy Pie Chart -->
+    <script src='~/Scripts/jquery.easypiechart.min.js'></script>
+
+    <!-- Sortable -->
+    <script src='~/Scripts/uncompressed/jquery.sortable.js'></script>
+
+    <!-- Owl Carousel -->
+    <script src='~/Scripts/owl.carousel.min.js'></script>
+
+    <!-- Modernizr -->
+    <script src='~/Scripts/modernizr.min.js'></script>
+
+    <!-- Simplify -->
+    <script src="~/Scripts/simplify.js"></script>
+    <script src="~/Scripts/simplify_dashboard.js"></script>
+
+    <!--Knockout-->>
+    <script src="~/Scripts/knockout-3.4.0.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+</head>
+<body>
+    @*权限处理*@
+    @{
+        bool root = false;
+        bool a1 = false;
+        bool a2 = false;
+        bool a3 = false;
+        bool a4 = false;
+        bool a5 = false;
+        bool a6 = false;
+        bool a7 = false;
+        bool a8 = false;
+        bool a9 = false;
+        bool a10 = false;
+        bool a11 = false;
+        bool a12 = false;
+        bool a13 = false;
+        bool a14 = false;
+        bool a15 = false;
+        bool a16 = false;
+    }
+
+    @if (Session["UID"] != null)
+    {
+        int meid = Convert.ToInt32(Session["UID"]);
+        PhotoStudio.Model.Staff my = new PhotoStudio.BLL.Staff().GetModel(meid);
+        PhotoStudio.Model.Sector see = new PhotoStudio.BLL.Sector().GetModel(Convert.ToInt32(my.SeID));
+        List<string>
+            listpower = new List<string>
+                ();
+        if (my.Power.Trim() != "888888" && see.Power.Trim() != "888888")
+        {
+            PhotoStudio.Model.Power mypo = new PhotoStudio.BLL.Power().GetModel(Convert.ToInt32(my.Power));
+            PhotoStudio.Model.Power sepo = new PhotoStudio.BLL.Power().GetModel(Convert.ToInt32(see.Power));
+            if (my.Power.Trim() != "0")
+            {
+                string[] po1 = mypo.Powers.Split(',');
+                for (int i = 0; i < po1.Length; i++)
+                {
+                    listpower.Add(po1[i]);
+                }
+            }
+            string[] po2 = sepo.Powers.Split(',');
+            for (int i = 0; i < po2.Length; i++)
+            {
+                listpower.Add(po2[i]);
+            }
+
+        }
+        else
+        {
+            root = true;
+            listpower.Add("888888");
+        }
+        a1 = listpower.Contains("1");
+        a2 = listpower.Contains("2");
+        a3 = listpower.Contains("3");
+        a4 = listpower.Contains("4");
+        a5 = listpower.Contains("5");
+        a6 = listpower.Contains("6");
+        a7 = listpower.Contains("7");
+        a8 = listpower.Contains("8");
+        a9 = listpower.Contains("9");
+        a10 = listpower.Contains("10");
+        a11 = listpower.Contains("11");
+        a12 = listpower.Contains("12");
+        a13 = listpower.Contains("13");
+        a14 = listpower.Contains("14");
+        a15 = listpower.Contains("15");
+        a16 = listpower.Contains("16");
+    }
+    @if (root)
+    {
+        a1 = true;
+        a2 = true;
+        a3 = true;
+        a4 = true;
+        a5 = true;
+        a6 = true;
+        a7 = true;
+        a8 = true;
+        a9 = true;
+        a10 = true;
+        a11 = true;
+        a12 = true;
+        a13 = true;
+        a14 = true;
+        a15 = true;
+        a16 = true;
+    }
+    <div class="wrapper preload">
+        @if (a11 == true)
+        {
+            <div class="sidebar-right">
+                <div class="sidebar-inner scrollable-sidebar">
+                    <div class="sidebar-header clearfix">
+
+                        @using (Ajax.BeginForm("", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "tips" }, new { id = "MessdateForm", @class = "form-horizontal " }))
+                        {
+                            @Html.TextBox("messdate", "2015/02/29", new { @class = "form-control dark-input", @type = "date", @name = "user_date", @id = "message_date" })
+                            @Html.TextBox("ser", "查找", new { @type = "submit", @class = "btn btn-success" })
+                        }
+                    </div>
+                    <div class="title-block">
+                        全部消息提醒 @ViewBag.UUID
+                    </div>
+                    <div class="content-block">
+                        <ul class="sidebar-list">
+                            @if (Session["UID"] != null)
+                            {
+                                int meid = Convert.ToInt32(Session["UID"]);
+                                string date = null;
+                                string sWhere = "";
+                                if (ViewBag.messdate != "")
+                                {
+                                    date = ViewBag.messdate;
+                                }
+                                if (date != null)
+                                {
+                                    sWhere = "CONVERT(VARCHAR,Time,120) like '" + date.Trim() + "%' and ToID=" + meid + " order by Time desc";
+                                }
+                                else
+                                {
+                                    sWhere = " ToID=" + meid + " order by Time desc";
+                                }
+                                IList
+                                <PhotoStudio.Model.Message>
+                                    listMessage = new PhotoStudio.BLL.Message().GetModelList(sWhere);
+                                if (listMessage.Count > 0)
+                                {
+                                    foreach (PhotoStudio.Model.Message n in listMessage)
+                                    {
+                                        PhotoStudio.Model.Staff m = new PhotoStudio.BLL.Staff().GetModel(Convert.ToInt32(n.FromID));
+                                        <li>
+                                            <a href="#" class="clearfix">
+                                                from @m.Name
+                                                <div class="chat-detail m-left-sm">
+                                                    <div class="chat-name ">
+                                                        <strong> @n.Title</strong>
+                                                    </div>
+                                                    <div class="chat-message">
+                                                        <pre class=".pre-scrollable"> @n.Text</pre>
+                                                    </div>
+                                                </div>
+                                                <div class="chat-status">
+                                                    @n.Time
+                                                </div>
+                                                <div class="chat-alert">
+                                                    <span class="badge badge-purple bounceIn animation-delay2"></span>
+                                                </div>
+                                            </a>
+                                            <hr />
+                                        </li>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <li>没有相关记录！！</li>
+                                }
+
+                            }
+                            else
+                            {
+                                <li><a href="/Login">请登录</a></li>
+                            }
+
+
+                        </ul>
+                    </div>
+                </div><!-- sidebar-inner -->
+            </div><!-- sidebar-right -->
+        }
+        <header class="top-nav">
+            <div class="top-nav-inner">
+                <div class="nav-header">
+                    <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleSM">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                   
+                    <span class="brand-name">
+                        @Html.ActionLink("摄影工作室信息管理网站", "Index", "Home", new { area = "" }, new { @class = "brand" })
+                    </span>
+
+                </div>
+                <div class="nav-container">
+                    <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleLG">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="pull-right m-right-sm">
+                        <div class="user-block hidden-xs">
+                            @if (Session["UID"] != null)
+                            {
+                                <a href="#" id="userToggle" data-toggle="dropdown">
+                                    <i class="fa fa-user  m-right-xs"></i>
+                                    <div class="user-detail inline-block">
+
+                                        @{int meid = 0;
+                                        }
+                                        @try
+                                        {
+                                            meid = Convert.ToInt32(Session["UID"]);
+                                        }
+                                        catch
+                                        {
+                                            meid = 0;
+                                        }
+                                        @{PhotoStudio.Model.Staff me = new PhotoStudio.BLL.Staff().GetModel(meid);
+                                        }
+                                        @Html.Label(me.Name);
+                                        <i class="fa fa-angle-down"></i>
+                                    </div>
+                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/Login">请登录</a>
+                                            }
+                            <div class="panel border dropdown-menu user-panel">
+                                <div class="panel-body paddingTB-sm">
+                                    <ul>
+                                        <li>
+                                            <a href="/Mypage">
+                                                <i class="fa fa-edit fa-lg"></i><span class="m-left-xs">我的个人信息</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Login/Out">
+                                                <i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">退出</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav-notification">
+                            <li>
+                                <a href="#" data-toggle="dropdown"><i class="fa fa-bell fa-lg"></i></a>
+                                <ul class="dropdown-menu notification dropdown-3 pull-right">
+                                    <li><a href="#">最新信息提醒</a></li>
+                                    @if (Session["UID"] != null)
+                                    {
+                                        int meid = 0;
+                                        try
+                                        {
+                                            meid = Convert.ToInt32(Session["UID"]);
+                                        }
+                                        catch
+                                        {
+                                            meid = 0;
+                                        }
+                                        try
+                                        {
+                                            PhotoStudio.Model.Message newme = new PhotoStudio.BLL.Message().GetMax(meid);
+                                            PhotoStudio.Model.Staff fr = new PhotoStudio.BLL.Staff().GetModel(Convert.ToInt32(newme.FromID));
+                                            <li>
+                                                <a href="#">
+                                                    <span class="notification-icon bg-warning">
+                                                        <i class="fa fa-warning"></i>
+                                                    </span>
+                                                    <span class="m-left-xs"> @newme.Title </span>
+                                                    <span class="time text-muted"> @newme.Time </span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <span class="m-left-xs"><pre> @newme.Text</pre></span>
+                                            </li>
+
+                                            <li><a href="#">来自 @fr.Name 的提醒</a></li>
+                                        }
+                                        catch
+                                        {
+                                            <li>无</li>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <li><a href="/Login">请登录</a></li>
+                                    }
+
+                                </ul>
+                            </li>
+                            <li class="chat-notification">
+                                <a href="#" class="sidebarRight-toggle"><i class="fa fa-comments fa-lg"></i></a>
+                                <div class="chat-alert">
+                                    我的全部消息！
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- ./top-nav-inner -->
+        </header>
+        <aside class="sidebar-menu fixed">
+            <div class="sidebar-inner scrollable-sidebar">
+                <div class="main-menu">
+                    <ul class="accordion">
+                        <li class="menu-header">
+                            Main Menu
+                        </li>
+                        <li class="bg-palette1 active">
+
+                            <a href="/Home/Index">
+                                <span class="menu-content block">
+                                    <span class="menu-icon"><i class="block fa fa-home fa-lg"></i></span>
+                                    <span class="text m-left-sm">摄影系列及其他商品</span>
+                                </span>
+                                <span class="menu-content-hover block">
+                                    主页
+                                </span>
+                            </a>
+                        </li>
+                        @if (Session["UID"] != null)
+                        {
+                            if (a2 || a3 || a4 || a5)
+                            {
+                                <li class="openable bg-palette2">
+                                    <a href="#">
+                                        <span class="menu-content block">
+                                            <span class="menu-icon"><i class="block fa fa-desktop fa-lg"></i></span>
+                                            <span class="text m-left-sm">前台营业</span>
+                                            <span class="submenu-icon"></span>
+                                        </span>
+                                        <span class="menu-content-hover block">
+                                            营业
+                                        </span>
+                                    </a>
+                                    <ul class="submenu bg-palette3">
+                                        @if (a2 == true)
+                                        {
+                                            <li><a href="/Order/OrderAlter"><span class="submenu-label">订单跟进</span></a></li>
+                                        }
+                                        @if (a3 == true)
+                                        {
+                                            <li><a href="/Order/Upload"><span class="submenu-label">相片上传</span></a></li>
+                                        }
+                                        @if (a4 == true)
+                                        {
+                                            <li><a href="/Order/Select"><span class="submenu-label">客户选片</span></a></li>
+                                        }
+                                        @if (a5 == true)
+                                        {
+                                            <li><a href="/Order/Records"><span class="submenu-label">历史订单</span></a></li>
+                                        }
+
+                                    </ul>
+                                </li>
+                            }
+
+                            if (a6 || a7)
+                            {
+                                <li class="openable bg-palette4">
+                                    <a href="#">
+                                        <span class="menu-content block">
+                                            <span class="menu-icon"><i class="block fa fa-list fa-lg"></i></span>
+                                            <span class="text m-left-sm">统计查询</span>
+                                            <span class="submenu-icon"></span>
+                                        </span>
+                                        <span class="menu-content-hover block">
+                                            统计
+                                        </span>
+                                    </a>
+                                    <ul class="submenu bg-palette5">
+
+                                        <li><a href="/Count"><span class="submenu-label">收入支出统计</span></a></li>
+                                        <li><a href="/Count/Appointment"><span class="submenu-label">当日预约订单</span></a></li>
+
+                                        @if (a7)
+                                        {
+                                            <li><a href="/Count/Guest"><span class="submenu-label">客户档案</span></a></li>
+                                        }
+
+                                    </ul>
+                                </li>
+                            }
+                            if (a8 || a9 || a10)
+                            {
+                                <li class="openable bg-palette6">
+                                    <a href="#">
+                                        <span class="menu-content block">
+                                            <span class="menu-icon"><i class="block fa fa-tags fa-lg"></i></span>
+                                            <span class="text m-left-sm">财务管理</span>
+                                            <span class="submenu-icon"></span>
+                                        </span>
+                                        <span class="menu-content-hover block">
+                                            财务
+                                        </span>
+                                    </a>
+                                    <ul class="submenu">
+                                        @if (a8)
+                                        {
+                                            <li><a href="/Finance"><span class="submenu-label">收支明细</span></a></li>
+                                        }
+                                        @if (a9)
+                                        {
+                                            <li><a href="/Finance/GoodsGet"><span class="submenu-label">商品入库</span></a></li>
+                                        }
+                                        @if (a10)
+                                        {
+                                            <li><a href="/Finance/Justice"><span class="submenu-label">员工赏罚</span></a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            if (a11)
+                            {
+                                <li class="bg-palette1">
+                                    <a href="/Message">
+                                        <span class="menu-content block">
+                                            <span class="menu-icon"><i class="block fa fa-envelope fa-lg"></i></span>
+                                            <span class="text m-left-sm">信息提醒</span>
+
+                                        </span>
+                                        <span class="menu-content-hover block">
+                                            提醒
+                                        </span>
+                                    </a>
+                                </li>
+
+                            }
+                            if (a12)
+                            {
+                                <li class="openable bg-palette2">
+                                    <a>
+                                        <span class="menu-content block">
+                                            <span class="menu-icon"><i class="block fa fa-clock-o fa-lg"></i></span>
+                                            <span class="text m-left-sm">商品及摄影套系添加</span>
+                                            <span class="submenu-icon"></span>
+                                        </span>
+                                        <span class="menu-content-hover block">
+                                            商品设置
+                                        </span>
+                                    </a>
+                                    <ul class="submenu">
+                                        <li><a href="/Home/Sets"><span class="submenu-label">摄影套系设置</span></a></li>
+                                        <li><a href="/Home/Other"><span class="submenu-label">其他商品设置</span></a></li>
+                                    </ul>
+                                </li>
+                                <li class="menu-header">
+                                    其他
+                                </li>
+                            }
+                            if (a13 || a14)
+                            {
+                                <li class="openable bg-palette3">
+                                    <a href="#">
+                                        <span class="menu-content block">
+                                            <span class="menu-icon"><i class="block fa fa-gift fa-lg"></i></span>
+                                            <span class="text m-left-sm">档案管理</span>
+                                            <span class="submenu-icon"></span>
+                                        </span>
+                                        <span class="menu-content-hover block">
+                                            档案
+                                        </span>
+                                    </a>
+                                    <ul class="submenu">
+                                        @if (a13)
+                                        {
+                                            <li><a href="/Files/Department"><span class="submenu-label">部门档案</span></a></li>
+                                        }
+                                        @if (a14)
+                                        {
+                                            <li><a href="/Files/Staff"><span class="submenu-label">员工档案</span></a></li>
+                                        }
+
+                                    </ul>
+                                </li>
+                            }
+                            if (a15 || a16)
+                            {
+                                <li class="openable bg-palette4">
+                                    <a href="#">
+                                        <span class="menu-content block">
+                                            <span class="menu-icon"><i class="block fa fa-list fa-lg"></i></span>
+                                            <span class="text m-left-sm">系统设置</span>
+                                            <span class="submenu-icon"></span>
+                                        </span>
+                                        <span class="menu-content-hover block">
+                                            系统
+                                        </span>
+                                    </a>
+                                    <ul class="submenu">
+                                        @if (a15)
+                                        {
+                                            <li><a href="/System"><span class="submenu-label">用户权限设置</span></a></li>
+                                        }
+                                        @if (a16)
+                                        {
+                                            <li><a href="/System/Database"><span class="submenu-label">数据备份与恢复</span></a></li>
+                                        }
+
+                                    </ul>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+                <div class="sidebar-fix-bottom clearfix">
+                    <div class="user-dropdown dropup pull-left">
+                        <a href="#" class="dropdwon-toggle font-18" data-toggle="dropdown">
+                            <i class="ion-person-add"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#" class="sidebarRight-toggle">
+                                    我的消息提醒
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="/Mypage/Modify">我的个人设置</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <a class="pull-right font-18" href="/Login/Out2"><i class="ion-log-out"></i></a>
+                </div>
+            </div><!-- sidebar-inner -->
+        </aside>
+        <div class="main-container">
+            @RenderBody()
+        </div><!-- /main-container -->
+        <footer class="footer">
+            <span class="footer-brand">
+                <strong class="text-danger">摄影工作室</strong>信息管理
+            </span>
+            <p class="no-margin">
+                &copy; 2016 <strong>.Daisy</strong>. ALL Rights Reserved.
+            </p>
+        </footer>
+    </div><!-- /wrapper -->
+
+    <a href="#" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+
+
+    <script>
+        $(function () {
+            $('.chart').easyPieChart({
+                easing: 'easeOutBounce',
+                size: '140',
+                lineWidth: '7',
+                barColor: '#7266ba',
+                onStep: function (from, to, percent) {
+                    $(this.el).find('.percent').text(Math.round(percent));
+                }
+            });
+
+            $('.sortable-list').sortable();
+
+            $('.todo-checkbox').click(function () {
+
+                var _activeCheckbox = $(this).find('input[type="checkbox"]');
+
+                if (_activeCheckbox.is(':checked')) {
+                    $(this).parent().addClass('selected');
+                }
+                else {
+                    $(this).parent().removeClass('selected');
+                }
+
+            });
+        });
+
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

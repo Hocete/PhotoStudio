@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    string[] classlx = { "bg-success", "bg-warning", "bg-danger", "bg-info", "bg-warning" };
+}
+@*权限处理*@
+@{
+    bool root = false;
+    bool a1 = false;
+    bool a2 = false;
+    bool a3 = false;
+    bool a4 = false;
+    bool a5 = false;
+    bool a6 = false;
+    bool a7 = false;
+    bool a8 = false;
+    bool a9 = false;
+    bool a10 = false;
+    bool a11 = false;
+    bool a12 = false;
+    bool a13 = false;
+    bool a14 = false;
+    bool a15 = false;
+}
+
+@if (Session["UID"] != null)
+{
+    int meid = Convert.ToInt32(Session["UID"]);
+    PhotoStudio.Model.Staff my = new PhotoStudio.BLL.Staff().GetModel(meid);
+    PhotoStudio.Model.Sector see = new PhotoStudio.BLL.Sector().GetModel(Convert.ToInt32(my.SeID));
+    List<string> listpower = new List<string>();
+    if (my.Power.Trim() != "888888" && see.Power.Trim() != "888888")
+    {
+        PhotoStudio.Model.Power mypo = new PhotoStudio.BLL.Power().GetModel(Convert.ToInt32(my.Power));
+        PhotoStudio.Model.Power sepo = new PhotoStudio.BLL.Power().GetModel(Convert.ToInt32(see.Power));
+        if (my.Power.Trim() != "0")
+        {
+            string[] po1 = mypo.Powers.Split(',');
+            for (int i = 0; i < po1.Length; i++)
+            {
+                listpower.Add(po1[i]);
+            }
+        }
+        string[] po2 = sepo.Powers.Split(',');
+        for (int i = 0; i < po2.Length; i++)
+        {
+            listpower.Add(po2[i]);
+        }
+
+    }
+    else
+    {
+        root = true;
+        listpower.Add("888888");
+    }
+    a1 = listpower.Contains("1");
+    a2 = listpower.Contains("2");
+    a3 = listpower.Contains("3");
+    a4 = listpower.Contains("4");
+    a5 = listpower.Contains("5");
+    a6 = listpower.Contains("6");
+    a7 = listpower.Contains("7");
+    a8 = listpower.Contains("8");
+    a9 = listpower.Contains("9");
+    a10 = listpower.Contains("10");
+    a11 = listpower.Contains("11");
+    a12 = listpower.Contains("12");
+    a13 = listpower.Contains("13");
+    a14 = listpower.Contains("14");
+    a15 = listpower.Contains("15");
+}
+<div class="padding-md">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="page-title">
+                价目表
+            </div>
+        </div>
+
+    </div>
+    <div class="text-danger">@ViewBag.Message</div>
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active"><a href="#photo" data-toggle="tab">摄影套系</a></li>
+        <li><a href="#goods" data-toggle="tab">商品零售</a></li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in active" id="photo">
+            <div class="col-md-12 text-right text-left-md p-top-md">
+                <div class="search-input-wrapper">
+                    <div class="search-input">
+
+                        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                        {
+                            @Html.TextBox("tx", "", new { @class = "form-control input-md inline-block", @placeholder = "请输入套系名称" })
+                            <button type="submit" class="btn btn-default "><i class="ion-ios7-search-strong"></i></button>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                @for (int i = 0; i < ViewBag.goodsall.Count; i++)
+                {
+
+                    <div class="col-md-3">
+                        <div class="panel panel-default weather-widget">
+                            <div class="panel-body @classlx[i%5] text-white">
+                                <div class="h4 text-white text-center"> @ViewBag.goodsall[i].Name </div>
+                                <div class="m-top-md m-bottom-md text-center">
+                                    <img src="@ViewBag.goodsall[i].Photo" id="skycon1" width="120" height="120" />
+                                </div>
+                            </div>
+                            <div class="panel-footer bg-white text-center padding-md">
+                                <div class="h4 text-upper">@ViewBag.goodsall[i].Type <i class="fa fa-photo"></i></div>
+                                <div class="text-muted font-12 m-top-xs">@ViewBag.goodsall[i].Spend 元</div>
+                      
+                                    @using (Html.BeginForm("Index", "Order", FormMethod.Post))
+                                    {
+                                        object sbb = ViewBag.goodsall[i].Name;
+                                        object sbb2 = ViewBag.goodsall[i].Spend;
+                                        @Html.TextBox("xz", sbb, new { @type = "hidden" })
+                                        @Html.TextBox("pp", sbb2, new { @type = "hidden" })
+                                        <button type="submit" class="btn btn-default text-center">立即预约</button>
+                                    }
+                            </div>
+                        </div><!-- ./panel -->
+                    </div><!-- ./col -->
+
+                }
+            </div>
+
+
+
+        </div>
+        <div class="tab-pane fade" id="goods">
+            <div class="col-md-12 text-right text-left-md p-top-md">
+                <div class="search-input-wrapper">
+                    <div class="search-input">
+                        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                        {
+                            @Html.TextBox("sp", "", new { @class = "form-control input-md inline-block", @placeholder = "请输入商品名称" })
+                            <button type="submit" class="btn btn-default "><i class="ion-ios7-search-strong"></i></button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @for (int i = 0; i < ViewBag.othersall.Count; i++)
+                {
+                    <div class="col-md-3">
+                        <div class="panel panel-default weather-widget">
+                            <div class="panel-body @classlx[i%5] text-white">
+                                <div class="h4 text-white text-center"> @ViewBag.othersall[i].Name </div>
+                                <div class="m-top-md m-bottom-md text-center">
+                                    <img src="@ViewBag.othersall[i].Photo" id="skycon1" width="120" height="120" />
+                                </div>
+                            </div>
+                            <div class="panel-footer bg-white text-center padding-md">
+                                <div class="h4 text-upper">库存： @ViewBag.othersall[i].Stock<i class="fa fa-bookmark"></i></div>
+                                <div class="text-muted font-12 m-top-xs">@ViewBag.othersall[i].Spend 元</div>
+                                @if (a1== true||root==true)
+                                {
+                                    using (Html.BeginForm("Index", "Home", FormMethod.Post))
+                                    {
+                                        object sbb = ViewBag.othersall[i].Name;
+                                        object sbb2 = ViewBag.othersall[i].Spend;
+                                        object sbb3 = ViewBag.othersall[i].ID;
+                                        @Html.TextBox("wp", sbb, new { @type = "hidden" })
+                                        @Html.TextBox("hf", sbb2, new { @type = "hidden" })
+                                        @Html.TextBox("wpid", sbb3, new { @type = "hidden" })
+                                        <button type="submit" class="btn btn-default text-center">购买</button>
+                                    }
+                                }
+
+                            </div>
+                        </div><!-- ./panel -->
+                    </div><!-- ./col -->
+                }
+            </div>
+        </div>
+    </div>
+</div><!-- ./padding-md -->

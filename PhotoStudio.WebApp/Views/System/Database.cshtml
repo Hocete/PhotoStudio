@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Database";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function DataBack(data) {
+
+        var serverData = data.split(':');
+        if (serverData[0] == "ok") {
+            $("#sussMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>" + serverData[1] + "！</strong></div>");
+        }
+        else if (serverData[0] == "no") {
+            $("#sussMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>" + serverData[1] + "!</strong></div>");
+        }
+        else {
+            $("#sussMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+        }
+    }
+</script>
+@if (Session["UID"] != null)
+{
+<div class="padding-md">
+    <h2 class="header-text">
+        数据备份与恢复
+        <span class="sub-header">
+            .Data
+        </span>
+    </h2>
+    <div id="sussMsg"></div>
+    <div class="text-danger text-center"><h3>@ViewBag.dat</h3></div>
+    <div class="row text-center">
+        @using (Ajax.BeginForm("DataBack", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "DataBack" }, new { id = "DataBack", @class = "form-horizontal ", @style = "display: inline;" }))
+        {
+                <button type="submit" class="btn btn-success">备份数据库</button>
+        }
+        &nbsp;
+        @using (Html.BeginForm("Down", "System", FormMethod.Post, new { @class = "form-horizontal ", @enctype = "multipart/form-data", @style = "display: inline;" }))
+        {
+               <button type="submit" class="btn btn-success">下载备份</button>
+        }
+    </div>
+    <br/>
+    <div class="row text-center">
+        @using (Html.BeginForm("Database", "System", FormMethod.Post, new { @class = "form-horizontal ", @enctype = "multipart/form-data" }))
+        {
+            @Html.TextBox("files", "", new { @class = "col-md-2 col-md-offset-3 form-control", @type = "file" })
+            <button type="submit" class="btn btn-success col-md-2 text-right">还原数据库</button>
+        }
+    </div>
+
+</div>
+}
+else
+{
+    <div class="padding-md">
+        <h1><a href="/Login">请登录！</a></h1>
+    </div>
+}

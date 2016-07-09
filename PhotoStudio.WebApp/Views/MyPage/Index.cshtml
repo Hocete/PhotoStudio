@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int meid = 0;
+    try
+    {
+        meid = Convert.ToInt32(Session["UID"]);
+    }
+    catch
+    {
+        meid = 0;
+    }
+    PhotoStudio.Model.Staff me = new PhotoStudio.BLL.Staff().GetModel(meid);
+    PhotoStudio.Model.Sector mese = new PhotoStudio.Model.Sector();
+    int? se = 1;
+    try
+    {
+        se = me.Sex;
+        mese = new PhotoStudio.BLL.Sector().GetModel(Convert.ToInt32(me.SeID));
+    }
+    catch
+    {
+        mese = new PhotoStudio.BLL.Sector().GetModel(1);
+    }
+
+    string sex = "";
+
+    if (se == 0)
+    {
+        sex = "男";
+    }
+    else
+    {
+        sex = "女";
+    }
+}
+@if (Session["UID"] != null)
+{
+    <div class="padding-md">
+        <h2 class="header-text">
+            我的信息
+            <span class="sub-header">
+                Welcome&nbsp;back.@me.Name
+            </span>
+        </h2>
+        <h4> @me.Name<i class="fa fa-user text-success m-left-xs font-14"></i></h4>
+
+        <div class="m-top-sm">
+            <div class="m-top-xs">
+                <i class="fa fa-gift user-profile-icon"></i>
+                部门: @mese.Name
+            </div>
+            <div class="m-top-xs">
+                <i class="fa fa-male user-profile-icon"></i>
+                <i class="fa fa-female user-profile-icon"></i>
+                性别: @sex
+            </div>
+            <div class="m-top-xs">
+                <i class="fa fa-graduation-cap user-profile-icon"></i>
+                学历: @me.Edu
+            </div>
+            <div class="m-top-xs">
+                <i class="fa fa-birthday-cake user-profile-icon"></i>
+                生日: @me.Birth
+            </div>
+            <div class="m-top-xs">
+                <i class="fa fa-phone user-profile-icon"></i>
+                电话: @me.Tel
+            </div>
+            <div class="m-top-xs">
+                <i class="fa fa-envelope-o user-profile-icon"></i>
+                邮箱: @me.Email
+            </div>
+            <div>
+                <i class="fa fa-home user-profile-icon"></i>
+                住址: @me.Place
+            </div>
+            <div class="m-top-xs">
+                <i class="fa fa-credit-card user-profile-icon"></i>
+                身份证: @me.IDCard
+            </div>
+
+            <div class="m-top-xs">
+                <i class="fa fa-calendar user-profile-icon"></i>
+                加入时间: @me.JoinTime
+            </div>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="padding-md">
+         <h1><a href="/Login">请登录！</a></h1>
+    </div>
+}
+

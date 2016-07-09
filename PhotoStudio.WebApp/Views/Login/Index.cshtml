@@ -1,0 +1,99 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>摄影工作室管理系统登录</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+
+    <!-- ionicons -->
+    <link href="~/Content/ionicons.min.css" rel="stylesheet">
+    <!-- Simplify -->
+    <link href="~/Content/simplify.min.css" rel="stylesheet">
+    <!-- Jquery -->
+    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
+    <!-- Popup Overlay -->
+    <script src="~/Scripts/jquery.popupoverlay.min.js"></script>
+    <!-- Modernizr -->
+    <script src="~/Scripts/modernizr.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <!-- Simplify -->
+    <script src="~/Scripts/simplify.js"></script>
+    <script type="text/javascript">
+        function tips(data) {
+            var serverData = data.split(':');
+            if (serverData[0] == "ok") {
+                window.location.href = "/Home/Index";
+            }
+            else if (serverData[0] == "no") {
+                $("#errorMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>登录失败!</strong> ID或密码错误,请重新输入!</div>");
+            }
+            else {
+                $("#errorMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+            }
+        }
+        function forget() {
+            window.location.href = "/Login/Forget";
+        }
+    </script>
+</head>
+<body class="overflow-hidden light-background">
+    <div class="wrapper no-navigation preload">
+        <div class="sign-in-wrapper">
+            <div class="sign-in-inner">
+                <div class="login-brand text-center">
+                    <i class="fa fa-photo  m-right-xs"></i>摄影工作室<strong class="sub-header">信息管理网站</strong>
+
+                </div>
+                @using (Ajax.BeginForm("UserLogin", new { }, new AjaxOptions() { HttpMethod = "post",OnSuccess = "tips" }, new { id = "loginForm", @class = "form-horizontal " }))
+                {
+
+
+                    <div class="form-group m-bottom-md">
+                        @Html.TextBox("UID", "", new { @class = "col-md-6 form-control", @placeholder = "Staff ID", @type = "text" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBox("PWD", "", new { @class = "col-md-6 form-control", @placeholder = "Password", @type = "password" })
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-checkbox">
+                            @Html.TextBox("Remember", "rem", new { @class = "col-md-6 form-control", @type = "checkbox"})
+                            <label for="Remember"></label>
+                        </div>
+                        记住密码
+                    </div>
+                    
+                    <div id="errorMsg" ></div>
+                    <div class="m-top-md p-top-sm">
+                        <button type="submit" class="btn btn-success btn-block btn-lg">立即登录</button>
+                    </div>
+
+                    <div class="m-top-md p-top-sm">
+                        <div class="font-12 text-center m-bottom-xs">
+                            <a onclick="forget()" class="font-12">忘记密码?</a>
+                        </div>
+                        <div class="font-12 text-center m-bottom-xs">
+                            © 2016 .Daisy. ALL Rights Reserved
+                        </div>
+                    </div>
+                }
+            </div><!-- ./sign-in-inner -->
+        </div><!-- ./sign-in-wrapper -->
+    </div><!-- /wrapper -->
+
+    <a href="" id="scroll-to-top" class="hidden-print"><i class="icon-chevron-up"></i></a>
+
+</body>
+</html>

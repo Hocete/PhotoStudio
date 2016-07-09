@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "GoodsGet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UID"] != null)
+{
+<script type="text/javascript">
+    function GoodsAdd(data) {
+
+            var serverData = data.split(':');
+            if (serverData[0] == "ok") {
+                $("#sussMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-check-circle m-right-xs\"></i><strong>" + serverData[1] + "！</strong></div>");
+            }
+            else if (serverData[0] == "no") {
+                $("#sussMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-times-circle m-right-xs\"></i> <strong>" + serverData[1] + "!</strong></div>");
+            }
+            else {
+                window.location.href = "/Home/Index";
+                $("#sussMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><i class=\"fa fa-exclamation-circle m-right-xs\"></i> <strong>系统繁忙！</strong></div>");
+            }
+        }
+</script>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default weather-widget">
+            <div class="panel-body bg-success text-white">
+                <div class="h4 text-white text-center">商品入库</div>
+            </div>
+            <div class="row m-top-md m-bottom-md text-center">
+                <div id="sussMsg"></div>
+@using (Ajax.BeginForm("GoodsAdd", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "GoodsAdd" }, new { id = "GoodsAdd", @class = "form-horizontal " }))
+{
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">入库商品名称</label>
+                        @Html.DropDownList("select1", (List<SelectListItem>)ViewBag.Letters, new { @class = "col-md-6 form-control", @placeholder = "name" });
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">入库数量 </label>
+                        @Html.TextBox("num", "", new { @class = "col-md-6 form-control", @placeholder = "number" })
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-3 text-right">入库商品单价</label>
+                        @Html.TextBox("price", "", new { @class = "col-md-6 form-control", @placeholder = "price" })
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">存入</button>
+                        <button type="reset" class="btn btn-default">重置</button>
+                    </div>
+                            }
+            </div>
+
+            <div class="panel-footer bg-white text-center padding-md">
+                <div class="h4 text-upper">by.@ViewBag.UID </div>
+                <div class="text-muted font-7 m-top-xs">
+                    @DateTime.Now
+                </div>
+            </div>
+        </div><!-- ./panel -->
+    </div><!-- ./col -->
+</div>
+}
+else
+{
+    <div class="padding-md">
+        <h1><a href="/Login">请登录！</a></h1>
+    </div>
+}
